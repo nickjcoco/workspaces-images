@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -ex
 SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
-add-apt-repository -y ppa:libretro/testing
+add-apt-repository -y ppa:libretro/stable
 apt-get update
 apt-get install -y retroarch
 cp /usr/share/applications/retroarch.desktop $HOME/Desktop/
@@ -38,8 +38,9 @@ EOL
 chmod +x /usr/bin/desktop_ready
 
 # Cleanup
-apt-get autoclean
-rm -rf \
+if [ -z ${SKIP_CLEAN+x} ]; then
+  apt-get autoclean
+  rm -rf \
     /var/lib/apt/lists/* \
-    /var/tmp/* \
-    /tmp/*
+    /var/tmp/*
+fi
